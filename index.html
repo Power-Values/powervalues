@@ -502,15 +502,15 @@
                         <p class="modal-card-description">Our team of researchers are actively gathering data and insights from the world top corporate leaders.<br/><br/>Submit your details below to receive an invite & be the first to receive our complimentary leadership support.</p>
                         <form class="modal-form" onsubmit="handleFormSubmit(event, 'left')">
                             <div class="form-field">
-                                <input type="text" class="form-input" placeholder="Name" required />
+                                <input type="text" name="name" class="form-input" placeholder="Name" required />
                                 <span class="required-asterisk">*</span>
                             </div>
                             <div class="form-field">
-                                <input type="email" class="form-input" placeholder="Email" required />
+                                <input type="email" name="email" class="form-input" placeholder="Email" required />
                                 <span class="required-asterisk">*</span>
                             </div>
                             <div class="form-field">
-                                <input type="tel" class="form-input" placeholder="Phone (optional)" />
+                                <input type="tel" name="phone" class="form-input" placeholder="Phone (optional)" />
                             </div>
                             <button type="submit" class="form-submit-btn">Submit Request For Free Report</button>
                         </form>
@@ -522,15 +522,15 @@
                         <p class="modal-card-description">Our team of researchers are actively gathering data and insights from the world top corporate leaders.<br/><br/>Submit your details below to receive an invite & be the first to receive our complimentary leadership support.</p>
                         <form class="modal-form" onsubmit="handleFormSubmit(event, 'right')">
                             <div class="form-field">
-                                <input type="text" class="form-input" placeholder="Name" required />
+                                <input type="text" name="name" class="form-input" placeholder="Name" required />
                                 <span class="required-asterisk">*</span>
                             </div>
                             <div class="form-field">
-                                <input type="email" class="form-input" placeholder="Email" required />
+                                <input type="email" name="email" class="form-input" placeholder="Email" required />
                                 <span class="required-asterisk">*</span>
                             </div>
                             <div class="form-field">
-                                <input type="tel" class="form-input" placeholder="Phone (optional)" />
+                                <input type="tel" name="phone" class="form-input" placeholder="Phone (optional)" />
                             </div>
                             <button type="submit" class="form-submit-btn">Submit Request For Free Report</button>
                         </form>
@@ -603,6 +603,22 @@
                         </div>
                         <button type="submit" class="coming-soon-btn">Send Message</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUCCESS MODAL FOR REPORT REQUEST -->
+        <div id="successModal" class="modal-overlay">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeSuccessModal()">&times;</button>
+                <div class="coming-soon-notification-card">
+                    <div class="coming-soon-icon">✅</div>
+                    <h2 class="coming-soon-title">Thank You!</h2>
+                    <p class="coming-soon-description">
+                        Our research teams are building this guide now, and an email will be sent to you shortly with an opportunity to get involved.<br/><br/>
+                        Check your inbox for more details on how you can contribute to this valuable resource.
+                    </p>
+                    <button type="button" class="coming-soon-btn" onclick="closeSuccessModal()">Got it</button>
                 </div>
             </div>
         </div>
@@ -720,11 +736,52 @@
                 document.getElementById('downloadModal').style.display = 'none';
             }
 
-            function handleFormSubmit(event, formSide) {
+            async function handleFormSubmit(event, formSide) {
                 event.preventDefault();
-                // Add your form submission logic here
-                closeDownloadModal();
-                openComingSoonNotificationModal(lastSelectedDownloadTitle);
+                
+                // Get form data
+                const form = event.target;
+                const formData = new FormData(form);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const phone = formData.get('phone') || '';
+                
+                // Disable submit button to prevent double submission
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+                
+                try {
+                    // Submit to GoHighLevel form
+                    const ghlFormId = 'mw7iFIyvtD03doKcO4lt';
+                    const ghlResponse = await fetch(`https://api.leadconnectorhq.com/widget/form/${ghlFormId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            tags: ['Report Request']
+                        })
+                    });
+                    
+                    if (!ghlResponse.ok) {
+                        throw new Error('Failed to submit to GoHighLevel');
+                    }
+                    
+                    // Success - close modal and show success message
+                    closeDownloadModal();
+                    openSuccessModal();
+                    
+                } catch (error) {
+                    console.error('Error submitting form:', error);
+                    alert('There was an error submitting your request. Please try again or contact us directly.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                }
             }
 
             // Close modal when clicking outside
@@ -910,6 +967,24 @@
                         openUnderConstructionModal();
                     });
                 }
+            })();
+
+            // Success Modal functions
+            function openSuccessModal() {
+                var m = document.getElementById('successModal');
+                if (m) m.style.display = 'flex';
+            }
+            function closeSuccessModal() {
+                var m = document.getElementById('successModal');
+                if (m) m.style.display = 'none';
+            }
+            // Close success modal when clicking outside
+            (function(){
+                var overlay = document.getElementById('successModal');
+                if (!overlay) return;
+                overlay.addEventListener('click', function(e){
+                    if (e.target === overlay) closeSuccessModal();
+                });
             })();
         </script>
         
