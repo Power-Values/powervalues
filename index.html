@@ -753,22 +753,36 @@
                 submitBtn.textContent = 'Submitting...';
                 
                 try {
-                    // Submit to GoHighLevel form
-                    const ghlFormId = 'mw7iFIyvtD03doKcO4lt';
-                    const ghlResponse = await fetch(`https://api.leadconnectorhq.com/widget/form/${ghlFormId}`, {
+                    // Submit to GoHighLevel API
+                    const ghlApiKey = 'pit-caee5681-521b-4f03-a77a-56676557b04d';
+                    const ghlLocationId = 'OOWdn3Gznj0DzxT0tgrm';
+                    
+                    // Split name into first and last name
+                    const nameParts = name.trim().split(' ');
+                    const firstName = nameParts[0] || '';
+                    const lastName = nameParts.slice(1).join(' ') || '';
+                    
+                    const ghlResponse = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${ghlApiKey}`,
                             'Content-Type': 'application/json',
+                            'Version': '2021-07-28'
                         },
                         body: JSON.stringify({
-                            name: name,
+                            firstName: firstName,
+                            lastName: lastName,
                             email: email,
                             phone: phone,
-                            tags: ['Report Request']
+                            tags: ['Report Request'],
+                            locationId: ghlLocationId,
+                            source: 'Website Form'
                         })
                     });
                     
                     if (!ghlResponse.ok) {
+                        const errorData = await ghlResponse.json().catch(() => ({}));
+                        console.error('GHL API Error:', errorData);
                         throw new Error('Failed to submit to GoHighLevel');
                     }
                     
