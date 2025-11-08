@@ -678,14 +678,46 @@
                 }
 
                 if (menuTrigger) {
-                    menuTrigger.addEventListener('click', toggleMenu);
+                    console.log('Menu trigger found, attaching event listeners');
+                    
+                    let touchHandled = false;
+                    
+                    // Use touchstart for mobile for instant response
+                    menuTrigger.addEventListener('touchstart', function(e) {
+                        console.log('Touch event on menu trigger');
+                        e.preventDefault();
+                        e.stopPropagation();
+                        touchHandled = true;
+                        toggleMenu(e);
+                        // Reset touchHandled after a delay to allow click to work if needed
+                        setTimeout(function() {
+                            touchHandled = false;
+                        }, 300);
+                    }, { passive: false });
+                    
+                    menuTrigger.addEventListener('click', function(e) {
+                        console.log('Click event on menu trigger');
+                        // Prevent double-toggling on mobile devices
+                        if (touchHandled) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            return;
+                        }
+                        toggleMenu(e);
+                    });
+                    
                     menuTrigger.addEventListener('keydown', function(e) {
                         if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
                             toggleMenu(e);
                         } else if (e.key === 'Escape') {
                             closeMenu();
                         }
                     });
+                    
+                    console.log('Event listeners attached successfully');
+                } else {
+                    console.error('Menu trigger not found!');
                 }
             });
 
@@ -696,19 +728,27 @@
                 const panel = document.getElementById('menuPanel');
                 const trigger = document.querySelector('.menu-trigger');
                 if (!panel) {
+                    console.error('Panel not found in setMenuState');
                     return;
                 }
 
+                console.log('Setting menu state to:', isOpen);
+                
                 if (isOpen) {
                     panel.classList.add('open');
                     panel.style.display = 'block';
+                    panel.style.visibility = 'visible';
+                    panel.style.opacity = '1';
                     panel.setAttribute('aria-hidden', 'false');
                     if (trigger) {
                         trigger.setAttribute('aria-expanded', 'true');
                     }
+                    console.log('Menu opened - classList:', panel.classList.toString(), 'display:', panel.style.display);
                 } else {
                     panel.classList.remove('open');
                     panel.style.display = 'none';
+                    panel.style.visibility = 'hidden';
+                    panel.style.opacity = '0';
                     panel.setAttribute('aria-hidden', 'true');
                     if (trigger) {
                         trigger.setAttribute('aria-expanded', 'false');
@@ -732,10 +772,12 @@
 
                 const panel = document.getElementById('menuPanel');
                 if (!panel) {
+                    console.error('Menu panel not found!');
                     return;
                 }
 
                 const isCurrentlyOpen = panel.classList.contains('open');
+                console.log('Toggle menu - currently open:', isCurrentlyOpen, 'will open:', !isCurrentlyOpen);
                 setMenuState(!isCurrentlyOpen);
             }
 
@@ -750,14 +792,22 @@
                 }
             });
 
+            // Use a slight delay to prevent race condition with menu trigger
+            var menuTouchTimeout;
             document.addEventListener('touchstart', function(e) {
                 const panel = document.getElementById('menuPanel');
                 const trigger = document.querySelector('.menu-trigger');
                 if (!panel) return;
+                
+                // Don't close if clicking on trigger or inside panel
                 const tapInsidePanel = panel.contains(e.target);
                 const tapOnTrigger = trigger && trigger.contains(e.target);
-                if (!tapInsidePanel && !tapOnTrigger) {
-                    closeMenu();
+                
+                if (!tapInsidePanel && !tapOnTrigger && panel.classList.contains('open')) {
+                    clearTimeout(menuTouchTimeout);
+                    menuTouchTimeout = setTimeout(function() {
+                        closeMenu();
+                    }, 150);
                 }
             }, { passive: true });
 
