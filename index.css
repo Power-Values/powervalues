@@ -3720,11 +3720,15 @@ button {
         display: inline-block !important;
         visibility: visible !important;
         opacity: 1 !important;
-        font-size: 18px !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
         line-height: 1.4 !important;
         width: auto !important;
-        max-width: 100% !important;
+        max-width: calc(100% - 40px) !important;
         word-wrap: break-word !important;
+        color: #000 !important;
+        position: relative !important;
+        z-index: 10 !important;
     }
     
     .section-d, .box-b, .group-5, .section-e, .section-f, .section-10 {
@@ -3732,11 +3736,23 @@ button {
         visibility: visible !important;
         opacity: 1 !important;
         cursor: pointer !important;
-        padding: 15px 10px !important;
-        background: rgba(255, 251, 253, 0.95) !important;
-        border-bottom: 1px solid #ddd !important;
+        padding: 20px 15px !important;
+        background: #fffbfd !important;
+        border: 1px solid #ddd !important;
+        border-radius: 8px !important;
+        margin: 10px 15px !important;
         align-items: center !important;
         justify-content: space-between !important;
+        width: calc(100% - 30px) !important;
+        box-sizing: border-box !important;
+        position: relative !important;
+    }
+    
+    .wrapper-b, .box-c, .group-6 {
+        display: block !important;
+        width: 100% !important;
+        visibility: visible !important;
+        opacity: 1 !important;
     }
     
     /* Move buttons into their respective cards on mobile */
@@ -3754,6 +3770,39 @@ button {
         margin-bottom: 30px !important;
         padding-bottom: 20px !important;
         border-bottom: 1px solid #eee !important;
+    }
+    
+    /* Ensure card images are visible on mobile */
+    .img-b, .pic-7, .pic-8 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        height: auto !important;
+        margin: 0 auto 15px !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Ensure card titles are visible */
+    .text-21, .text-23, .text-25 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 20px !important;
+        font-weight: 800 !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+        margin: 15px 0 10px !important;
+        color: #000 !important;
+    }
+    
+    /* Box-6 container */
+    .box-6 {
+        display: block !important;
+        width: 100% !important;
+        padding: 15px !important;
+        box-sizing: border-box !important;
     }
 }
 
@@ -4337,10 +4386,53 @@ button {
         top: auto;
     }
     
+    /* Power Values Method™ for Corporations title */
+    .text-18 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 28px !important;
+        line-height: 1.3 !important;
+        width: calc(100% - 30px) !important;
+        margin: var(--mobile-spacing-lg) var(--mobile-spacing-sm) var(--mobile-spacing-md) !important;
+        text-align: left !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        color: #000 !important;
+    }
+    
+    /* Power Values Method description box */
+    .box-5 {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        width: calc(100% - 30px) !important;
+        margin: 0 var(--mobile-spacing-sm) var(--mobile-spacing-md) !important;
+        padding: 15px !important;
+        box-sizing: border-box !important;
+    }
+    
+    .text-19, .text-1a {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        width: 100% !important;
+        margin-bottom: 15px !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        color: #333 !important;
+    }
+    
     .section-4 {
         width: calc(100% - 30px);
         margin: var(--mobile-spacing-lg) var(--mobile-spacing-sm) 0;
         height: auto;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
     }
     
     /* Show section-4 images on mobile */
@@ -4348,11 +4440,14 @@ button {
     .section-4 .img-8,
     .section-4 .img-9,
     .section-4 .pic-6,
-    .section-4 .img-a {
+    .section-4 .img-a,
+    .section-4 .pic-5 {
         display: block !important;
         width: 100% !important;
         height: 2px !important;
         margin: 0 !important;
+        background: #000 !important;
+        visibility: visible !important;
         position: relative;
         padding: var(--mobile-spacing-md) 0;
     }
@@ -4462,12 +4557,14 @@ button {
     
     .text-22, .text-24, .text-26 {
         width: 100%;
-        font-size: 17px;
-        line-height: 1.6;
+        font-size: 16px;
+        line-height: 1.5;
         text-align: center !important;
-        display: block !important;
+        display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        padding: 0 15px !important;
+        box-sizing: border-box !important;
         height: auto;
         text-align: center;
         color: #555;
