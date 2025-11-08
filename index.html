@@ -778,6 +778,10 @@
 
                 const isCurrentlyOpen = panel.classList.contains('open');
                 console.log('Toggle menu - currently open:', isCurrentlyOpen, 'will open:', !isCurrentlyOpen);
+                
+                // Force a reflow to ensure CSS changes take effect
+                void panel.offsetHeight;
+                
                 setMenuState(!isCurrentlyOpen);
             }
 

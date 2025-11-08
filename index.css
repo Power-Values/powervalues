@@ -4597,11 +4597,17 @@ button {
     }
     
     .menu-panel {
-        top: calc(70px + env(safe-area-inset-top, 0px));
-        right: max(0px, env(safe-area-inset-right, 0px));
-        width: 220px;
-        max-width: calc(100vw - 20px - env(safe-area-inset-right, 0px));
-        z-index: 10000;
+        position: fixed !important;
+        top: calc(70px + env(safe-area-inset-top, 0px)) !important;
+        right: max(10px, env(safe-area-inset-right, 10px)) !important;
+        left: auto !important;
+        width: 85% !important;
+        max-width: 280px !important;
+        min-width: 200px !important;
+        z-index: 10000 !important;
+        background: transparent !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .menu-panel.open {
@@ -4612,9 +4618,31 @@ button {
     }
     
     .menu-panel-inner {
-        width: 100%;
-        max-width: 220px;
-        box-sizing: border-box;
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        background: #863158 !important;
+        max-height: calc(100vh - 100px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Reduce padding on mobile for more compact menu */
+    .menu-items {
+        padding: 10px 15px 15px 15px !important;
+    }
+    
+    .menu-item {
+        font-size: 18px !important;
+        line-height: 24px !important;
+        padding: 8px 0 !important;
+        margin: 4px 0 !important;
+    }
+    
+    /* Ensure menu dropdown doesn't clip the menu */
+    .menu-dropdown {
+        overflow: visible !important;
     }
     
     .text-2 {
@@ -5766,16 +5794,29 @@ button {
     }
     
     .menu-panel {
-        width: 200px;
+        width: 90% !important;
+        max-width: 250px !important;
+        min-width: 180px !important;
     }
     
     .menu-panel-inner {
-        width: 200px;
+        width: 100% !important;
+        max-width: 100% !important;
     }
     
     .menu-item {
-        font-size: 18px;
-        line-height: 28px;
+        font-size: 16px !important;
+        line-height: 22px !important;
+        padding: 6px 0 !important;
+        margin: 3px 0 !important;
+    }
+    
+    .menu-items {
+        padding: 8px 12px 12px 12px !important;
+    }
+    
+    .menu-topbar {
+        height: 40px !important;
     }
     
     /* Footer adjustments for small screens */
