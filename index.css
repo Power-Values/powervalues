@@ -3770,23 +3770,86 @@ button {
 /* Mobile padding for method description */
 @media (max-width: 768px) {
     .method-description {
-        padding: 15px 20px;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+        line-height: 1.4 !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: left !important;
+        overflow: hidden !important;
+    }
+    
+    .method-hover-text {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding: 8px 10px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        height: 100% !important;
+        overflow: hidden !important;
     }
     
     /* Override method title white-space for mobile */
     .method-title {
         white-space: normal !important;
-        font-size: 48px;
-        line-height: 1.2;
+        font-size: 36px !important;
+        line-height: 1.1 !important;
+        padding: 8px 12px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
     }
     
     /* Ensure method items fit on mobile */
     .method-item {
         width: 100% !important;
-        max-width: 100%;
+        max-width: 100% !important;
         position: relative !important;
-        margin-bottom: 20px;
+        margin-bottom: 15px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
     }
+    
+    /* Specific height constraints for mobile */
+    .section-4 .method-item {
+        min-height: 75px !important;
+        max-height: auto !important;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+    .method-description {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+    }
+    
+    .method-title {
+        font-size: 28px !important;
+        padding: 6px 10px !important;
+    }
+    
+    .method-hover-text {
+        padding: 6px 8px !important;
+    }
+}
+
+/* Desktop - ensure descriptions fit in boxes */
+.method-description {
+    max-width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.method-hover-text {
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .method-item:hover .method-title {
