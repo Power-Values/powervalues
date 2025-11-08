@@ -753,38 +753,26 @@
                 submitBtn.textContent = 'Submitting...';
                 
                 try {
-                    // Submit to GoHighLevel API
-                    const ghlApiKey = 'pit-caee5681-521b-4f03-a77a-56676557b04d';
-                    const ghlLocationId = 'OOWdn3Gznj0DzxT0tgrm';
+                    // Submit to GoHighLevel API (using direct form submission endpoint)
+                    const ghlFormId = 'mw7iFIyvtD03doKcO4lt';
                     
-                    // Split name into first and last name
-                    const nameParts = name.trim().split(' ');
-                    const firstName = nameParts[0] || '';
-                    const lastName = nameParts.slice(1).join(' ') || '';
+                    // Create form-encoded data
+                    const formBody = new URLSearchParams();
+                    formBody.append('name', name);
+                    formBody.append('email', email);
+                    if (phone) formBody.append('phone', phone);
                     
-                    const ghlResponse = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
+                    const ghlResponse = await fetch(`https://api.leadconnectorhq.com/widget/form/${ghlFormId}`, {
                         method: 'POST',
+                        mode: 'no-cors',
                         headers: {
-                            'Authorization': `Bearer ${ghlApiKey}`,
-                            'Content-Type': 'application/json',
-                            'Version': '2021-07-28'
+                            'Content-Type': 'application/x-www-form-urlencoded',
                         },
-                        body: JSON.stringify({
-                            firstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            phone: phone,
-                            tags: ['Report Request'],
-                            locationId: ghlLocationId,
-                            source: 'Website Form'
-                        })
+                        body: formBody
                     });
                     
-                    if (!ghlResponse.ok) {
-                        const errorData = await ghlResponse.json().catch(() => ({}));
-                        console.error('GHL API Error:', errorData);
-                        throw new Error('Failed to submit to GoHighLevel');
-                    }
+                    // With no-cors mode, we can't check response status
+                    // Assume success if no error is thrown
                     
                     // Success - close modal and show success message
                     closeDownloadModal();
