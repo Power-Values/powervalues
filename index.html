@@ -1156,6 +1156,88 @@
                     if (e.target === overlay) closeSuccessModal();
                 });
             })();
+
+            // Mobile Tool Card Tap Interactions
+            (function(){
+                // Check if device is mobile (touch-enabled)
+                var isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                
+                if (isMobile) {
+                    var toolCards = document.querySelectorAll('.tool-card');
+                    
+                    toolCards.forEach(function(card) {
+                        var touchStartTime;
+                        var touchStartPos = { x: 0, y: 0 };
+                        
+                        // Touch start
+                        card.addEventListener('touchstart', function(e) {
+                            touchStartTime = Date.now();
+                            touchStartPos.x = e.touches[0].clientX;
+                            touchStartPos.y = e.touches[0].clientY;
+                        }, { passive: true });
+                        
+                        // Touch end - handle tap
+                        card.addEventListener('touchend', function(e) {
+                            var touchEndTime = Date.now();
+                            var touchDuration = touchEndTime - touchStartTime;
+                            
+                            // Only process if it was a quick tap (less than 300ms)
+                            if (touchDuration < 300) {
+                                // Check if touch moved too much (not a tap)
+                                var touchEndPos = e.changedTouches[0];
+                                var deltaX = Math.abs(touchEndPos.clientX - touchStartPos.x);
+                                var deltaY = Math.abs(touchEndPos.clientY - touchStartPos.y);
+                                
+                                if (deltaX < 10 && deltaY < 10) {
+                                    e.preventDefault();
+                                    
+                                    // Toggle active state
+                                    if (card.classList.contains('active')) {
+                                        card.classList.remove('active');
+                                    } else {
+                                        // Remove active from all other cards
+                                        toolCards.forEach(function(otherCard) {
+                                            otherCard.classList.remove('active');
+                                        });
+                                        // Add active to this card
+                                        card.classList.add('active');
+                                    }
+                                }
+                            }
+                        }, { passive: false });
+                        
+                        // Handle click for desktop with touch capability
+                        card.addEventListener('click', function(e) {
+                            // Only handle click if it's actually a mobile device
+                            if (isMobile && !card.classList.contains('active')) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                
+                                // Remove active from all other cards
+                                toolCards.forEach(function(otherCard) {
+                                    otherCard.classList.remove('active');
+                                });
+                                // Add active to this card
+                                card.classList.add('active');
+                            }
+                        });
+                        
+                        // Remove active state when clicking outside
+                        document.addEventListener('click', function(e) {
+                            if (!card.contains(e.target) && card.classList.contains('active')) {
+                                card.classList.remove('active');
+                            }
+                        });
+                        
+                        // Remove active state when touching outside
+                        document.addEventListener('touchstart', function(e) {
+                            if (!card.contains(e.target) && card.classList.contains('active')) {
+                                card.classList.remove('active');
+                            }
+                        });
+                    });
+                }
+            })();
         </script>
         
     </body>
